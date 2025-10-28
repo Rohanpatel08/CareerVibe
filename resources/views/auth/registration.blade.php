@@ -72,7 +72,7 @@
         $('#registrationForm').submit(function (e) {
             e.preventDefault();
             $.ajax({
-                url: "{{ route('register') }}",
+                url: "{{ route('auth.register') }}",
                 method: 'POST',
                 data: $('#registrationForm').serializeArray(),
                 dataType: 'json',
