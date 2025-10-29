@@ -52,7 +52,6 @@ class AuthController extends Controller
             'email' => 'required|email',
             'password' => 'required|min:6',
         ]);
-        // dd($request->all());
         if ($validator->passes()) {
             if (Auth::attempt($request->only('email', 'password'))) {
                 return redirect()->route('home');
