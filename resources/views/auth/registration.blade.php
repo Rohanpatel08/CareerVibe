@@ -104,7 +104,7 @@
                         $('#email').removeClass('is-invalid').siblings('p').removeClass('invalid-feedback').html('');
                         $('#password').removeClass('is-invalid').siblings('p').removeClass('invalid-feedback').html('');
                         $('#confirm_password').removeClass('is-invalid').siblings('p').removeClass('invalid-feedback').html('');
-                        window.location.href = "{{ route('login') }}";
+                        window.location.href = "{{ route('home') }}";
                     }
                 },
                 error: function (err) {

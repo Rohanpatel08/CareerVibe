@@ -25,11 +25,12 @@ class AuthController extends Controller
         ]);
 
         if ($validator->passes()) {
-            User::create([
+            $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
             ]);
+            Auth::login($user);
 
             session()->flash('success', 'Registration successful');
             return response()->json(['status' => true]);
