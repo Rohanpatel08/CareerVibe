@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\JobController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -24,4 +25,7 @@ Route::middleware('auth:web')->group(function () {
     Route::put('/profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
     Route::post('/profile-pic/update', [ProfileController::class, 'updateProfilePic'])->name('profilePic.update');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    Route::get('/job/create', [JobController::class, 'create'])->name('job.create');
+    Route::post('/job/store', [JobController::class, 'store'])->name('job.store');
 });
