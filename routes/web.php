@@ -26,6 +26,8 @@ Route::middleware('auth:web')->group(function () {
     Route::post('/profile-pic/update', [ProfileController::class, 'updateProfilePic'])->name('profilePic.update');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
+    // Job
+    Route::get('/job/my-jobs', [JobController::class, 'myJobs'])->name('job.myJobs');
     Route::get('/job/create', [JobController::class, 'create'])->name('job.create');
     Route::post('/job/store', [JobController::class, 'store'])->name('job.store');
 });

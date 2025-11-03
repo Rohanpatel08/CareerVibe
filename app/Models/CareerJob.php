@@ -10,6 +10,7 @@ class CareerJob extends Model
 
     protected $fillable = [
         'title',
+        'user_id',
         'description',
         'location',
         'vacancy',
@@ -25,4 +26,14 @@ class CareerJob extends Model
         'job_type_id',
         'job_category_id',
     ];
+
+    public function jobType()
+    {
+        return $this->hasOne(JobType::class, 'id', 'job_type_id');
+    }
+
+    public function jobCategory()
+    {
+        return $this->hasOne(JobCategory::class, 'id', 'job_category_id');
+    }
 }
