@@ -30,4 +30,7 @@ Route::middleware('auth:web')->group(function () {
     Route::get('/job/my-jobs', [JobController::class, 'myJobs'])->name('job.myJobs');
     Route::get('/job/create', [JobController::class, 'create'])->name('job.create');
     Route::post('/job/store', [JobController::class, 'store'])->name('job.store');
+    Route::get('/job/edit/{id}', [JobController::class, 'edit'])->name('job.edit');
+    Route::put('/job/update/{id}', [JobController::class, 'update'])->name('job.update');
+    Route::post('/job/delete/{id}', [JobController::class, 'delete'])->name('job.delete');
 });

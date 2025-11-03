@@ -62,9 +62,11 @@
                                                             <ul class="dropdown-menu dropdown-menu-end">
                                                                 <li><a class="dropdown-item" href="job-detail.html"> <i
                                                                             class="fa fa-eye" aria-hidden="true"></i> View</a></li>
-                                                                <li><a class="dropdown-item" href="#"><i class="fa fa-edit"
-                                                                            aria-hidden="true"></i> Edit</a></li>
-                                                                <li><a class="dropdown-item" href="#"><i class="fa fa-trash"
+                                                                <li><a class="dropdown-item"
+                                                                        href="{{ route('job.edit', $job->id) }}"><i
+                                                                            class="fa fa-edit" aria-hidden="true"></i> Edit</a></li>
+                                                                <li><a class="dropdown-item" href="#"
+                                                                        onclick="deleteJob({{ $job->id }})"><i class="fa fa-trash"
                                                                             aria-hidden="true"></i> Remove</a></li>
                                                             </ul>
                                                         </div>
@@ -106,4 +108,23 @@
             </div>
         </div>
     </div>
+@endsection
+@section('customJS')
+    <script>
+        function deleteJob(id) {
+            if (confirm("Are you sure you want to delete this job?")) {
+                $.ajax({
+                    url: "{{ route('job.delete', ':id') }}".replace(':id', id),
+                    method: 'POST',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                    },
+                    dataType: 'json',
+                    success: function (response) {
+                        window.location.href = "{{ route('job.myJobs') }}";
+                    }
+                });
+            }
+        }
+    </script>
 @endsection
