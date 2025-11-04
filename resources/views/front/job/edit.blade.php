@@ -17,7 +17,7 @@
                 @include('sidebar')
                 <div class="col-lg-9">
                     @include('message')
-                    <form action="{{ route('job.update', $job->id) }}" method="post" name="createJobForm" id="createJobForm">
+                    <form action="{{ route('job.update', base64_encode($job->id)) }}" method="post" name="createJobForm" id="createJobForm">
                         @csrf
                         @method('PUT')
                         <div class="card border-0 shadow mb-4 ">

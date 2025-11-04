@@ -63,11 +63,12 @@
                                                                 <li><a class="dropdown-item" href="job-detail.html"> <i
                                                                             class="fa fa-eye" aria-hidden="true"></i> View</a></li>
                                                                 <li><a class="dropdown-item"
-                                                                        href="{{ route('job.edit', $job->id) }}"><i
+                                                                        href="{{ route('job.edit', base64_encode($job->id)) }}"><i
                                                                             class="fa fa-edit" aria-hidden="true"></i> Edit</a></li>
                                                                 <li><a class="dropdown-item" href="#"
-                                                                        onclick="deleteJob({{ $job->id }})"><i class="fa fa-trash"
-                                                                            aria-hidden="true"></i> Remove</a></li>
+                                                                        onclick="deleteJob('{{ base64_encode($job->id) }}')"><i
+                                                                            class="fa fa-trash" aria-hidden="true"></i> Remove</a>
+                                                                </li>
                                                             </ul>
                                                         </div>
                                                     </td>

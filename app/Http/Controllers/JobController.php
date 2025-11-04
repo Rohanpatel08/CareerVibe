@@ -80,6 +80,7 @@ class JobController extends Controller
     public function edit($id)
     {
         $user = Auth::user();
+        $id = base64_decode($id);
         $job = CareerJob::find($id);
         $categories = JobCategory::where('status', 1)->get();
         $job_types = JobType::where('status', 1)->get();
@@ -88,7 +89,7 @@ class JobController extends Controller
 
     public function update(Request $request, $id)
     {
-        // dd($request->all());
+        $id = base64_decode($id);
         $validator = Validator::make($request->all(), [
             "title" => "required|min:3",
             "category" => "required",
@@ -135,6 +136,7 @@ class JobController extends Controller
     public function delete($id)
     {
         try {
+            $id = base64_decode($id);
             $job = CareerJob::findorFail($id);
             $job->delete();
             session()->flash('success', 'Job deleted successfully.');
