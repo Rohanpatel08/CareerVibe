@@ -12,6 +12,8 @@ Route::get('/', function () {
         : redirect()->route('login');
 });
 
+Route::get('/jobs', [JobController::class, 'index'])->name('jobs');
+
 Route::middleware('guest')->group(function () {
     Route::get('/register', [AuthController::class, 'registration'])->name('registration');
     Route::post('/auth/register', [AuthController::class, 'register'])->name('auth.register');

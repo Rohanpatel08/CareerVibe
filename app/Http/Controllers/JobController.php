@@ -12,11 +12,35 @@ use Illuminate\Support\Facades\Validator;
 class JobController extends Controller
 {
 
+    public function index(Request $request)
+    {
+        $categories = JobCategory::where('status', 1)->get();
+        $jobTypes = JobType::where('status', 1)->get();
+        $jobs = CareerJob::where('status', 1);
+
+        //Search Filter
+        if (!empty($request->keyword)) {
+            $jobs = $jobs->where(function ($query) use ($request) {
+                $query->orWhere('title', 'like', '%' . $request->keyword . '%')
+                    ->orWhere('keywords', 'like', '%' . $request->keyword . '%');
+            });
+        }
+
+        if (!empty($request->location)) {
+            $jobs = $jobs->where('location', 'like', '%' . $request->location . '%');
+        }
+        $jobs = $jobs->orderBy('created_at', 'DESC')->get();
+        return view('front.job.find-jobs', [
+            'categories' => $categories,
+            'jobTypes' => $jobTypes,
+            'jobs' => $jobs
+        ]);
+    }
+
     public function myJobs()
     {
         $user = Auth::user();
-        $jobs = CareerJob::where('user_id', $user->id)->paginate(5);
-        // dd($jobs);
+        $jobs = CareerJob::where('user_id', $user->id)->orderBy('created_at', 'DESC')->paginate(5);
         return view('front.job.my-jobs', [
             'jobs' => $jobs,
             'user' => $user
