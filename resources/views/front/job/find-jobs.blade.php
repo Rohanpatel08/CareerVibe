@@ -10,8 +10,8 @@
                 <div class="col-6 col-md-2">
                     <div class="align-end">
                         <select name="sort" id="sort" class="form-control">
-                            <option value="">Latest</option>
-                            <option value="">Oldest</option>
+                            <option value="1" {{ Request::get('sort') == 1 ? 'selected' : '' }}>Latest</option>
+                            <option value="0" {{ Request::get('sort') == 0 ? 'selected' : '' }}>Oldest</option>
                         </select>
                     </div>
                 </div>
@@ -19,59 +19,63 @@
 
             <div class="row pt-5">
                 <div class="col-md-4 col-lg-3 sidebar mb-4">
-                    <div class="card border-0 shadow p-4">
-                        <div class="mb-4">
-                            <h2>Keywords</h2>
-                            <input type="text" placeholder="Keywords" class="form-control">
-                        </div>
+                    <form action="" id="searchForm">
+                        <div class="card border-0 shadow p-4">
+                            <div class="mb-4">
+                                <h2>Keywords</h2>
+                                <input value="{{ Request::get('keyword') }}" type="text" placeholder="Keywords" id="keywords" class="form-control">
+                            </div>
 
-                        <div class="mb-4">
-                            <h2>Location</h2>
-                            <input type="text" placeholder="Location" class="form-control">
-                        </div>
+                            <div class="mb-4">
+                                <h2>Location</h2>
+                                <input value="{{ Request::get('location') }}" type="text" placeholder="Location" id="location" class="form-control">
+                            </div>
 
-                        <div class="mb-4">
-                            <h2>Category</h2>
-                            <select name="category" id="category" class="form-control">
-                                <option value="">Select a Category</option>
-                                @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}">{{ $category->category }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                            <div class="mb-4">
+                                <h2>Category</h2>
+                                <select name="category" id="category" class="form-control">
+                                    <option value="">Select a Category</option>
+                                    @foreach ($categories as $category)
+                                        <option value="{{ $category->id }}" {{ Request::get('category') == $category->id ? 'selected' : '' }}>{{ $category->category }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
 
-                        <div class="mb-4">
-                            <h2>Job Type</h2>
-                            @if ($jobTypes->isNotEmpty())
-                                @foreach ($jobTypes as $job_type)
-                                    <div class="form-check mb-2">
-                                        <input class="form-check-input " name="job_type" type="checkbox" value="{{ $job_type->id }}"
-                                            id="job-type-{{ $job_type->id }}">
-                                        <label class="form-check-label "
-                                            for="job-type-{{ $job_type->id }}">{{ $job_type->job_type }}</label>
-                                    </div>
-                                @endforeach
-                            @endif
-                        </div>
+                            <div class="mb-4">
+                                <h2>Job Type</h2>
+                                @if ($jobTypes->isNotEmpty())
+                                    @foreach ($jobTypes as $job_type)
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input " name="job_type" type="checkbox" value="{{ $job_type->id }}"
+                                                id="job-type-{{ $job_type->id }}" {{ in_array($job_type->id,$jobtypeArray) ? 'checked' : '' }}>
+                                            <label class="form-check-label "
+                                                for="job-type-{{ $job_type->id }}">{{ $job_type->job_type }}</label>
+                                        </div>
+                                    @endforeach
+                                @endif
+                            </div>
 
-                        <div class="mb-4">
-                            <h2>Experience</h2>
-                            <select name="category" id="category" class="form-control">
-                                <option value="">Select Experience</option>
-                                <option value="">1 Year</option>
-                                <option value="">2 Years</option>
-                                <option value="">3 Years</option>
-                                <option value="">4 Years</option>
-                                <option value="">5 Years</option>
-                                <option value="">6 Years</option>
-                                <option value="">7 Years</option>
-                                <option value="">8 Years</option>
-                                <option value="">9 Years</option>
-                                <option value="">10 Years</option>
-                                <option value="">10+ Years</option>
-                            </select>
+                            <div class="mb-4">
+                                <h2>Experience</h2>
+                                <select name="experience" id="experience" class="form-control">
+                                    <option value="">Select Experience</option>
+                                    <option value="1" {{ Request::get('experience') == 1 ? 'selected' : '' }}>1 Year</option>
+                                    <option value="2" {{ Request::get('experience') == 2 ? 'selected' : '' }}>2 Years</option>
+                                    <option value="3" {{ Request::get('experience') == 3 ? 'selected' : '' }}>3 Years</option>
+                                    <option value="4" {{ Request::get('experience') == 4 ? 'selected' : '' }}>4 Years</option>
+                                    <option value="5" {{ Request::get('experience') == 5 ? 'selected' : '' }}>5 Years</option>
+                                    <option value="6" {{ Request::get('experience') == 6 ? 'selected' : '' }}>6 Years</option>
+                                    <option value="7" {{ Request::get('experience') == 7 ? 'selected' : '' }}>7 Years</option>
+                                    <option value="8" {{ Request::get('experience') == 8 ? 'selected' : '' }}>8 Years</option>
+                                    <option value="9" {{ Request::get('experience') == 9 ? 'selected' : '' }}>9 Years</option>
+                                    <option value="10"{{ Request::get('experience') == 10 ? 'selected' : '' }}>10 Years</option>
+                                    <option value="10_plus" {{ Request::get('experience') == '10_plus' ? 'selected' : '' }}>10+ Years</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Search</button>
+                            <a  href="{{ route('jobs') }}" class="btn btn-primary mt-2">Reset</a>
                         </div>
-                    </div>
+                    </form>
                 </div>
                 <div class="col-md-8 col-lg-9 ">
                     <div class="job_listing_area">
@@ -92,10 +96,6 @@
                                                         <p class="mb-0">
                                                             <span class="fw-bolder"><i class="fa fa-clock-o"></i></span>
                                                             <span class="ps-1">{{ $job->jobType->job_type }}</span>
-                                                        </p>
-                                                        <p class="mb-0">
-                                                            <span class="fw-bolder"><i class="fa fa-clock-o"></i></span>
-                                                            <span class="ps-1">{{ $job->keywords }}</span>
                                                         </p>
                                                         <p class="mb-0">
                                                             <span class="fw-bolder"><i class="fa fa-usd"></i></span>
@@ -150,4 +150,49 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('customJS')
+
+<script>
+    $("#searchForm").submit(function (e) {
+        e.preventDefault();
+
+        let url = '{{ route("jobs") }}?';
+        let keyword = $('#keywords').val();
+        let location = $('#location').val();
+        let category = $('#category').val();
+        let experience = $('#experience').val();
+
+        let jobTypes = $("input:checkbox[name='job_type']:checked").map(function() {
+            return $(this).val();
+        }).get();
+
+        if(keyword != '') {
+            url += 'keyword=' + keyword + '&';
+        }
+
+        if(location != '') {
+            url += 'location=' + location + '&';
+        }
+        
+        if(category != '') {
+            url += 'category=' + category + '&';
+        }
+
+        if(jobTypes.length > 0) {
+            url += 'job_type=' + jobTypes.join(',') + '&';
+        }
+        
+        if(experience != '') {
+            url += 'experience=' + experience + '&';
+        }
+        url += 'sort=' + $('#sort').val();
+        window.location.href = url;
+    });
+
+    $('#sort').change(function() {
+        $('#searchForm').submit();
+    })
+</script>
 @endsection

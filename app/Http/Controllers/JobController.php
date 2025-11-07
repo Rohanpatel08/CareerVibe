@@ -29,11 +29,34 @@ class JobController extends Controller
         if (!empty($request->location)) {
             $jobs = $jobs->where('location', 'like', '%' . $request->location . '%');
         }
-        $jobs = $jobs->orderBy('created_at', 'DESC')->get();
+
+        if (!empty($request->category)) {
+            $jobs = $jobs->where('job_category_id', $request->category);
+        }
+
+        $jobtypeArray = [];
+        if (!empty($request->job_type)) {
+            $jobtypeArray = explode(',', $request->job_type);
+            $jobs = $jobs->whereIn('job_type_id', $jobtypeArray);
+        }
+
+        if (!empty($request->experience)) {
+            $jobs = $jobs->where('experience', $request->experience);
+        }
+
+        if ($request->sort == '0') {
+            $jobs = $jobs->orderBy('created_at', 'ASC');
+        } else {
+            $jobs = $jobs->orderBy('created_at', 'DESC');
+        }
+
+        $jobs = $jobs->get();
+
         return view('front.job.find-jobs', [
             'categories' => $categories,
             'jobTypes' => $jobTypes,
-            'jobs' => $jobs
+            'jobs' => $jobs,
+            'jobtypeArray' => $jobtypeArray
         ]);
     }
 
