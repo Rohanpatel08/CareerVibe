@@ -198,4 +198,11 @@ class JobController extends Controller
             ]);
         }
     }
+
+    public function details($id)
+    {
+        $id = base64_decode($id);
+        $job = CareerJob::findOrFail($id);
+        return view('front.job.details', compact('job'));
+    }
 }
