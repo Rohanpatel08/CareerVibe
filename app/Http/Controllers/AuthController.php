@@ -54,7 +54,9 @@ class AuthController extends Controller
             'password' => 'required|min:6',
         ]);
         if ($validator->passes()) {
-            if (Auth::attempt($request->only('email', 'password'))) {
+            $remember = $request->filled('remember');
+            if (Auth::attempt($request->only('email', 'password'), $remember)) {
+                $request->session()->regenerate();
                 return redirect()->route('home');
             } else {
                 return redirect()->route('login')->with('error', 'Invalid email or password')->withInput($request->only('email'));

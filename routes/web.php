@@ -14,6 +14,7 @@ Route::get('/', function () {
 
 Route::get('/jobs', [JobController::class, 'index'])->name('jobs');
 Route::get('/job/detail/{id}', [JobController::class, 'details'])->name('job.details');
+Route::post('/job/apply', [JobController::class, 'applyForJob'])->name('job.apply');
 
 Route::middleware('guest')->group(function () {
     Route::get('/register', [AuthController::class, 'registration'])->name('registration');

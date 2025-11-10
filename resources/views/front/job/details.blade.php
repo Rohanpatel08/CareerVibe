@@ -17,6 +17,7 @@
         <div class="container job_details_area">
             <div class="row pb-5">
                 <div class="col-md-8">
+                    @include('message')
                     <div class="card shadow border-0">
                         <div class="job_details_header">
                             <div class="single_jobs white-bg d-flex justify-content-between">
@@ -63,7 +64,11 @@
                             <div class="border-bottom"></div>
                             <div class="pt-3 text-end">
                                 <a href="#" class="btn btn-secondary">Save</a>
-                                <a href="#" class="btn btn-primary">Apply</a>
+                                @if (Auth::check())
+                                    <a href="#" class="btn btn-primary" onclick="applyForJob({{ $job->id }})">Apply</a>
+                                @else
+                                    <a href="{{ route('login') }}" class="btn btn-primary">Login To Apply</a>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -131,4 +136,25 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('customJS')
+    <script>
+        function applyForJob(id) {
+            if (confirm("Are you sure you want to apply for this job?")) {
+                $.ajax({
+                    url: "{{ route('job.apply') }}",
+                    method: 'POST',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        id: id
+                    },
+                    dataType: 'json',
+                    success: function (response) {
+                        window.location.reload();
+                    }
+                });
+            }
+        }
+    </script>
 @endsection

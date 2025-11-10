@@ -20,7 +20,7 @@
                         <form action="{{ route('auth.login') }}" method="post">
                             @csrf
                             <div class="mb-3">
-                                <label for="" class="mb-2">Email*</label>
+                                <label for="" class="mb-2">Email<span class="text-danger">*</span></label>
                                 <input type="text" name="email" id="email" class="form-control @error('email') is-invalid
                                 @enderror" placeholder="example@example.com" value="{{ old('email') }}">
                                 @error('email')
@@ -28,12 +28,16 @@
                                 @enderror
                             </div>
                             <div class="mb-3">
-                                <label for="" class="mb-2">Password*</label>
+                                <label for="" class="mb-2">Password<span class="text-danger">*</span></label>
                                 <input type="password" name="password" id="password" class="form-control @error('password')
                                 is-invalid @enderror" placeholder="Enter Password">
                                 @error('password')
                                     <p class="invalid-feedback">{{ $message }}</p>
                                 @enderror
+                            </div>
+                            <div class="mb-3">
+                                <input type="checkbox" name="remember" id="remember" class="form-check-input">
+                                <label for="remember" class="mb-2 form-check-label">Remember Me</label>
                             </div>
                             <div class="justify-content-between d-flex">
                                 <button type="submit" class="btn btn-primary mt-2">Login</button>

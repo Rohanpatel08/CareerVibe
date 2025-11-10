@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\CareerJob;
+use App\Models\JobApplication;
 use App\Models\JobCategory;
 use App\Models\JobType;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -204,5 +206,51 @@ class JobController extends Controller
         $id = base64_decode($id);
         $job = CareerJob::findOrFail($id);
         return view('front.job.details', compact('job'));
+    }
+
+
+    public function applyForJob(Request $request)
+    {
+        $job = CareerJob::findorFail($request->id);
+
+        if (!$job) {
+            // return redirect()->back()->with('error', 'Job not found.');
+            session()->flash('error', 'Job not found.');
+            return response()->json([
+                'status' => false,
+                'errors' => "Job not found."
+            ]);
+        }
+
+        if (JobApplication::where('user_id', Auth::user()->id)->where('job_id', $job->id)->exists()) {
+            // return redirect()->back()->with('error', 'You have already applied for this job.');
+            session()->flash('error', 'You have already applied for this job.');
+            return response()->json([
+                'status' => false,
+                'errors' => "You have already applied for this job."
+            ]);
+        }
+
+        if ($job->user_id == Auth::user()->id) {
+            // return redirect()->back()->with('error', 'You cannot apply for your own job.');
+            session()->flash('error', 'You cannot apply for your own job.');
+            return response()->json([
+                'status' => false,
+                'errors' => "You cannot apply for your own job."
+            ]);
+        }
+
+        JobApplication::create([
+            "user_id" => Auth::user()->id,
+            "job_id" => $job->id,
+            "employer_id" => $job->user_id,
+            "applied_at" => Carbon::now()
+        ]);
+        // return redirect()->back()->with('success', 'Applied for job successfully.');
+        session()->flash('success', 'Applied for job successfully.');
+        return response()->json([
+            'status' => true,
+            'message' => "Applied for job successfully."
+        ]);
     }
 }
