@@ -37,4 +37,8 @@ Route::middleware('auth:web')->group(function () {
     Route::get('/job/edit/{id}', [JobController::class, 'edit'])->name('job.edit');
     Route::put('/job/update/{id}', [JobController::class, 'update'])->name('job.update');
     Route::post('/job/delete/{id}', [JobController::class, 'delete'])->name('job.delete');
+
+    // Job Application
+    Route::get('/job/my-job-applications', [JobController::class, 'myJobApplications'])->name('job.myJobApplications');
+    Route::post('/job/my-job-applications/remove', [JobController::class, 'removeAppliedJobs'])->name('job.removeAppliedJobs');
 });

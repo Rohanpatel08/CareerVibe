@@ -261,4 +261,32 @@ class JobController extends Controller
             'message' => "Applied for job successfully."
         ]);
     }
+
+    public function myJobApplications()
+    {
+        $user = Auth::user();
+        $jobs = JobApplication::where('user_id', Auth::user()->id)->paginate(5);
+        return view('front.job.my-applied-jobs', [
+            'user' => $user,
+            'jobs' => $jobs
+        ]);
+    }
+
+    // public function myJobApplicationDetails($id){
+    //     $id = base64_decode($id);
+    //     $job = JobApplication::findorFail($id);
+    //     return view('front.job.my-applied-job-details', compact('job'));
+    // }
+
+    public function removeAppliedJobs(Request $request)
+    {
+        $id = base64_decode($request->id);
+        $jobApplication = JobApplication::findorFail($id);
+        $jobApplication->delete();
+
+        session()->flash('success', 'Job application removed successfully.');
+        return response()->json([
+            'status' => true
+        ]);
+    }
 }
