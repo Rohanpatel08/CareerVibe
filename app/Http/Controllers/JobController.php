@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendJobApplicationEmail;
+use App\Mail\JobApplicationMail;
 use App\Models\CareerJob;
 use App\Models\JobApplication;
 use App\Models\JobCategory;
 use App\Models\JobType;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class JobController extends Controller
@@ -246,6 +250,10 @@ class JobController extends Controller
             "employer_id" => $job->user_id,
             "applied_at" => Carbon::now()
         ]);
+
+        $employer = User::findOrFail($job->user_id);
+        SendJobApplicationEmail::dispatch($employer, Auth::user(), $job);
+
         // return redirect()->back()->with('success', 'Applied for job successfully.');
         session()->flash('success', 'Applied for job successfully.');
         return response()->json([
