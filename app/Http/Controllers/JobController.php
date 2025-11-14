@@ -8,6 +8,7 @@ use App\Models\CareerJob;
 use App\Models\JobApplication;
 use App\Models\JobCategory;
 use App\Models\JobType;
+use App\Models\SavedJob;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -209,7 +210,13 @@ class JobController extends Controller
     {
         $id = base64_decode($id);
         $job = CareerJob::findOrFail($id);
-        return view('front.job.details', compact('job'));
+        $jobSaved = 0;
+        if (Auth::check()) {
+            $jobSaved = SavedJob::where('job_id', $job->id)->where('user_id', Auth::user()->id)->count();
+        }
+
+        $jobApplications = JobApplication::where('job_id', $job->id)->with(['user', 'jobPost'])->get();
+        return view('front.job.details', compact('job'))->with(['jobSaved', $jobSaved, 'jobApplications' => $jobApplications]);
     }
 
 
@@ -283,6 +290,51 @@ class JobController extends Controller
         $id = base64_decode($request->id);
         $jobApplication = JobApplication::findorFail($id);
         $jobApplication->delete();
+
+        session()->flash('success', 'Job application removed successfully.');
+        return response()->json([
+            'status' => true
+        ]);
+    }
+
+    public function SaveJob(Request $request)
+    {
+        $job = CareerJob::findorFail($request->id);
+        $user = Auth::user();
+
+        $jobSaved = SavedJob::where('job_id', $job->id)->where('user_id', $user->id)->count();
+        if ($jobSaved > 0) {
+            session()->flash('error', 'Job already saved.');
+            return response()->json([
+                'status' => false,
+                'errors' => "Job already saved."
+            ]);
+        }
+        SavedJob::create([
+            "user_id" => $user->id,
+            "job_id" => $job->id,
+        ]);
+        session()->flash('success', 'Job saved successfully.');
+        return response()->json([
+            'status' => true
+        ]);
+    }
+
+    public function mySavedJobs()
+    {
+        $user = Auth::user();
+        $jobs = SavedJob::where('user_id', Auth::user()->id)->orderBy('created_at', 'DESC')->paginate(5);
+        return view('front.job.my-saved-jobs', [
+            'user' => $user,
+            'jobs' => $jobs
+        ]);
+    }
+
+    public function removeSavedJobs(Request $request)
+    {
+        $id = base64_decode($request->id);
+        $savedJob = SavedJob::findorFail($id);
+        $savedJob->delete();
 
         session()->flash('success', 'Job application removed successfully.');
         return response()->json([

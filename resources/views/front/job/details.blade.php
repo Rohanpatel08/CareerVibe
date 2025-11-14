@@ -38,8 +38,9 @@
                                     </div>
                                 </div>
                                 <div class="jobs_right">
-                                    <div class="apply_now">
-                                        <a class="heart_mark" href="#"> <i class="fa fa-heart-o" aria-hidden="true"></i></a>
+                                    <div class="apply_now {{ (isset($jobSaved) && $jobSaved == 1) ? ' saved-job' : ''}}">
+                                        <a class="heart_mark" href="javascript:void(0);" onclick="SaveJob({{ $job->id }})">
+                                            <i class="fa fa-heart-o" aria-hidden="true"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -63,15 +64,57 @@
                             </div>
                             <div class="border-bottom"></div>
                             <div class="pt-3 text-end">
-                                <a href="#" class="btn btn-secondary">Save</a>
                                 @if (Auth::check())
+                                    <a href="#" class="btn btn-secondary" onclick="SaveJob({{ $job->id }})">Save</a>
                                     <a href="#" class="btn btn-primary" onclick="applyForJob({{ $job->id }})">Apply</a>
                                 @else
+                                    <a href="{{ route('login') }}" class="btn btn-secondary">Login To Save</a>
                                     <a href="{{ route('login') }}" class="btn btn-primary">Login To Apply</a>
                                 @endif
                             </div>
                         </div>
                     </div>
+                    @if (Auth::check())
+                        @if (Auth::user()->id === $job->user_id)
+
+
+                            <div class="card shadow border-0 mt-4">
+                                <div class="job_details_header">
+                                    <div class="single_jobs white-bg d-flex justify-content-between">
+                                        <div class="jobs_left d-flex align-items-center">
+                                            <div class="jobs_conetent">
+                                                <h4>Applicants</h4>
+                                            </div>
+                                        </div>
+                                        <div class="jobs_right">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="descript_wrap white-bg">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Email</th>
+                                                <th>Applied At</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if ($jobApplications->isNotEmpty())
+                                                @foreach ($jobApplications as $jobApplication)
+                                                    <tr>
+                                                        <td>{{ $jobApplication->user->name }}</td>
+                                                        <td>{{ $jobApplication->user->email }}</td>
+                                                        <td>{{ Carbon\Carbon::parse($jobApplication->applied_at)->format('d M, Y') }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            @endif
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        @endif
+                    @endif
                 </div>
                 <div class="col-md-4">
                     <div class="card shadow border-0">
@@ -144,6 +187,22 @@
             if (confirm("Are you sure you want to apply for this job?")) {
                 $.ajax({
                     url: "{{ route('job.apply') }}",
+                    method: 'POST',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        id: id
+                    },
+                    dataType: 'json',
+                    success: function (response) {
+                        window.location.reload();
+                    }
+                });
+            }
+        }
+        function SaveJob(id) {
+            if (confirm("Are you sure you want to Save this job?")) {
+                $.ajax({
+                    url: "{{ route('job.saveJob') }}",
                     method: 'POST',
                     data: {
                         _token: "{{ csrf_token() }}",
