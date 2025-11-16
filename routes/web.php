@@ -44,4 +44,8 @@ Route::middleware('auth:web')->group(function () {
     Route::post('job/save-job', [JobController::class, 'SaveJob'])->name('job.saveJob');
     Route::get('job/my-saved-job', [JobController::class, 'mySavedJobs'])->name('job.mySavedJobs');
     Route::post('job/remove-saved-job', [JobController::class, 'removeSavedJobs'])->name('job.removeSavedJob');
+
+    //reset Password
+
+    Route::post('reset/password', [ProfileController::class, 'resetPassword'])->name('reset.password');
 });

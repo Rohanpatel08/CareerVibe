@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class ProfileController extends Controller
@@ -77,5 +78,26 @@ class ProfileController extends Controller
             'status' => true,
             'errors' => []
         ]);
+    }
+
+
+    public function resetPassword(Request $request)
+    {
+        // dd($request->all());
+        $validator = Validator::make($request->all(), [
+            'old_password' => 'required|min:6',
+            'new_password' => 'required|min:6',
+            'confirm_password' => 'required|same:new_password',
+        ]);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator);
+        }
+        $id = Auth::user()->id;
+        $user = User::findOrFail($id);
+        $user->update([
+            'password' => Hash::make($request->new_password)
+        ]);
+        session()->flash('success', 'Password updated successfully.');
+        return redirect()->route('logout');
     }
 }

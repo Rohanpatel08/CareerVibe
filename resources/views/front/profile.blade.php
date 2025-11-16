@@ -54,24 +54,39 @@
                     </div>
 
                     <div class="card border-0 shadow mb-4">
-                        <div class="card-body p-4">
-                            <h3 class="fs-4 mb-1">Change Password</h3>
-                            <div class="mb-4">
-                                <label for="" class="mb-2">Old Password*</label>
-                                <input type="password" placeholder="Old Password" class="form-control">
+                        <form action="{{ route('reset.password') }}" id="passwordResetForm" method="post">
+                            @csrf
+                            <div class="card-body p-4">
+                                <h3 class="fs-4 mb-1">Change Password</h3>
+                                <div class="mb-4">
+                                    <label for="" class="mb-2">Old Password*</label>
+                                    <input type="password" placeholder="Old Password" name="old_password" id="old_password"
+                                        class="form-control">
+                                    @error('old_password')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                                <div class="mb-4">
+                                    <label for="" class="mb-2">New Password*</label>
+                                    <input type="password" placeholder="New Password" name="new_password" id="new_password"
+                                        class="form-control">
+                                    @error('new_password')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                                <div class="mb-4">
+                                    <label for="" class="mb-2">Confirm Password*</label>
+                                    <input type="password" placeholder="Confirm Password" name="confirm_password"
+                                        id="confirm_password" class="form-control">
+                                    @error('confirm_password')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
                             </div>
-                            <div class="mb-4">
-                                <label for="" class="mb-2">New Password*</label>
-                                <input type="password" placeholder="New Password" class="form-control">
+                            <div class="card-footer  p-4">
+                                <button type="submit" class="btn btn-primary">Update</button>
                             </div>
-                            <div class="mb-4">
-                                <label for="" class="mb-2">Confirm Password*</label>
-                                <input type="password" placeholder="Confirm Password" class="form-control">
-                            </div>
-                        </div>
-                        <div class="card-footer  p-4">
-                            <button type="button" class="btn btn-primary">Update</button>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -181,5 +196,22 @@
                 }
             })
         })
+        // $('#passwordResetForm').submit(function (e) {
+        //     e.preventDefault();
+        //     $.ajax({
+        //         url: "{{ route('reset.password') }}",
+        //         type: 'POST',
+        //         data: {
+        //             _token: "{{ csrf_token() }}",
+        //             old_password: $('#old_password').val(),
+        //             new_password: $('#new_password').val(),
+        //             confirm_password: $('#confirm_password').val()
+        //         },
+        //         success: function (data) {
+        //             console.log(data);
+        //             window.location.href = "{{ route('logout') }}";
+        //         }
+        //     })
+        // });
     </script>
 @endsection

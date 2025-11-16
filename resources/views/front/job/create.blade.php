@@ -120,15 +120,15 @@
 
                                 <div class="mb-4">
                                     <label for="" class="mb-2">Description<span class="req">*</span></label>
-                                    <textarea class="form-control" name="description" id="description" cols="5" rows="5"
-                                        placeholder="Description">{{ old('description') }}</textarea>
+                                    <textarea class="form-control textarea" name="description" id="description" cols="5"
+                                        rows="5" placeholder="Description">{{ old('description') }}</textarea>
                                     @error('description')
                                         <span class="text-danger small">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="mb-4">
                                     <label for="" class="mb-2">Benefits</label>
-                                    <textarea class="form-control" name="benefits" id="benefits" cols="5" rows="5"
+                                    <textarea class="form-control textarea" name="benefits" id="benefits" cols="5" rows="5"
                                         placeholder="Benefits">{{ old('benefits') }}</textarea>
                                     @error('benefits')
                                         <span class="text-danger small">{{ $message }}</span>
@@ -136,16 +136,18 @@
                                 </div>
                                 <div class="mb-4">
                                     <label for="" class="mb-2">Responsibility</label>
-                                    <textarea class="form-control" name="responsibility" id="responsibility" cols="5"
-                                        rows="5" placeholder="Responsibility">{{ old('responsibility') }}</textarea>
+                                    <textarea class="form-control textarea" name="responsibility" id="responsibility"
+                                        cols="5" rows="5"
+                                        placeholder="Responsibility">{{ old('responsibility') }}</textarea>
                                     @error('responsibility')
                                         <span class="text-danger small">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="mb-4">
                                     <label for="" class="mb-2">Qualifications</label>
-                                    <textarea class="form-control" name="qualifications" id="qualifications" cols="5"
-                                        rows="5" placeholder="Qualifications">{{ old('qualifications') }}</textarea>
+                                    <textarea class="form-control textarea" name="qualifications" id="qualifications"
+                                        cols="5" rows="5"
+                                        placeholder="Qualifications">{{ old('qualifications') }}</textarea>
                                     @error('qualifications')
                                         <span class="text-danger small">{{ $message }}</span>
                                     @enderror
@@ -221,6 +223,7 @@
 
 @section('customJS')
     <script>
+
         $('#userForm').on('submit', function (e) {
             e.preventDefault();
             var formData = $('#userForm').serializeArray();
