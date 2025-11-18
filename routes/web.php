@@ -17,6 +17,8 @@ Route::get('/job/detail/{id}', [JobController::class, 'details'])->name('job.det
 Route::post('/job/apply', [JobController::class, 'applyForJob'])->name('job.apply');
 
 Route::middleware('guest')->group(function () {
+
+    // Authentication Routes
     Route::get('/register', [AuthController::class, 'registration'])->name('registration');
     Route::post('/auth/register', [AuthController::class, 'register'])->name('auth.register');
     Route::get('/login', [AuthController::class, 'login'])->name('login');
@@ -24,10 +26,13 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth:web')->group(function () {
+
+    // Profile Routes
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/profile', [ProfileController::class, 'profile'])->name('profile');
     Route::put('/profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
     Route::post('/profile-pic/update', [ProfileController::class, 'updateProfilePic'])->name('profilePic.update');
+    Route::get('profile/activity', [ProfileController::class, 'activity'])->name('profile.activity');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
     // Job
@@ -46,6 +51,5 @@ Route::middleware('auth:web')->group(function () {
     Route::post('job/remove-saved-job', [JobController::class, 'removeSavedJobs'])->name('job.removeSavedJob');
 
     //reset Password
-
     Route::post('reset/password', [ProfileController::class, 'resetPassword'])->name('reset.password');
 });

@@ -22,6 +22,9 @@
                 <li class="list-group-item d-flex justify-content-between p-3">
                     <a href="{{ route('profile') }}">Account Settings</a>
                 </li>
+                <li class="list-group-item d-flex justify-content-between p-3">
+                    <a href="{{ route('profile.activity') }}">Account Activity</a>
+                </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                     <a href="{{ route('job.create') }}">Post a Job</a>
                 </li>

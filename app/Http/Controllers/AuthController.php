@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\UserLogin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -28,7 +29,7 @@ class AuthController extends Controller
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
-                'password' => Hash::make($request->password),
+                'password' => $request->password,
             ]);
             Auth::login($user);
 
@@ -56,6 +57,12 @@ class AuthController extends Controller
         if ($validator->passes()) {
             $remember = $request->filled('remember');
             if (Auth::attempt($request->only('email', 'password'), $remember)) {
+                UserLogin::create([
+                    'user_id' => Auth::user()->id,
+                    'ip_address' => $request->ip(),
+                    'last_login' => now(),
+                    'user_agent' => $request->header('User-Agent')
+                ]);
                 $request->session()->regenerate();
                 return redirect()->route('home');
             } else {

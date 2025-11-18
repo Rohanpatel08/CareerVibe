@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\UserLogin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -99,5 +100,15 @@ class ProfileController extends Controller
         ]);
         session()->flash('success', 'Password updated successfully.');
         return redirect()->route('logout');
+    }
+
+    public function activity()
+    {
+        $user = Auth::user();
+        $user_logins = UserLogin::where('user_id', $user->id)->orderBy('last_login', 'desc')->get();
+        return view('front.activity', [
+            'user' => $user,
+            'user_logins' => $user_logins
+        ]);
     }
 }
