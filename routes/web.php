@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\ProfileController;
@@ -52,4 +53,7 @@ Route::middleware('auth:web')->group(function () {
 
     //reset Password
     Route::post('reset/password', [ProfileController::class, 'resetPassword'])->name('reset.password');
+
+    // Admin
+    Route::get('admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard')->middleware('admin');
 });
