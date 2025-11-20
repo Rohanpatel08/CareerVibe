@@ -57,6 +57,9 @@ class DashboardController extends Controller
         $user = User::findOrFail($request->id);
         $user->status = $request->status;
         $user->save();
-        return response()->json(['status' => true]);
+        return response()->json([
+            'status' => true,
+            'userStatus' => $user->status
+        ]);
     }
 }

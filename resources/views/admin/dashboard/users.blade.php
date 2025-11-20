@@ -46,21 +46,26 @@
                                                 <td>{{ $user->email }}</td>
                                                 <td>{{ $user->mobile ?? 'N/A' }}</td>
                                                 <td>{{ $user->destination ?? 'N/A' }}</td>
+                                                <td id="status">{!!  $user->status == 1 ? '<small class="badge bg-success">Active</span>' : '<small class="badge bg-dangrer">Inactive</span>' !!}</td>
                                                 <td>
-                                                    <div class="job-status text-capitalize">
-                                                        {{ $user->status == 1 ? 'active' : 'inactive' }}
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="d-flex align-items-center gap-2">
-                                                        <div class="form-check form-switch">
-                                                            <input class="form-check-input change-status" type="checkbox" 
-                                                                role="switch" data-id="{{ $user->id }}" id="status"
-                                                                {{ $user->status == 1 ? 'checked' : '' }}>
+                                                    <div class="d-flex align-items-center gap-3" style="height: 40px;">
+                                                        <div class="form-check form-switch mb-0">
+                                                            <input class="form-check-input change-status" type="checkbox"
+                                                                role="switch" data-id="{{ $user->id }}" {{ $user->status == 1 ? 'checked' : '' }}>
                                                         </div>
-                                                        <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-outline-warning"><i class="fa fa-edit"></i></a>
-                                                        <a href="#" class="btn btn-outline-danger"><i class="fa fa-trash" onclick="deleteUser({{ $user->id }})"></i></a>
+                                                        <a href="{{ route('admin.users.edit', $user->id) }}"
+                                                            class="d-flex align-items-center">
+                                                            <i class="fa fa-edit text-warning"
+                                                                style="font-size: 1.4rem; line-height: 1;"></i>
+                                                        </a>
+
+                                                        <span class="d-flex align-items-center"
+                                                            onclick="deleteUser({{ $user->id }})" style="cursor:pointer;">
+                                                            <i class="fa fa-trash text-danger"
+                                                                style="font-size: 1.4rem; line-height: 1;"></i>
+                                                        </span>
                                                     </div>
+
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -78,33 +83,37 @@
 @endsection
 
 @section('customJS')
-<script>
-    $(document).ready(function() {
-        $('.change-status').change(function() {
-            let status = $(this).prop('checked') == true ? 1 : 0;
-            let id = $(this).data('id');
-            $.ajax({
-                url: "{{ route('user.changeStatus') }}",
-                method: 'POST',
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    status: status,
-                    id: id
-                },
-                dataType: 'json',
-                success: function (response) {
-                    if (response.status == true) {
-                        window.location.reload();
+    <script>
+        $(document).ready(function () {
+            $('.change-status').change(function () {
+                let status = $(this).prop('checked') == true ? 1 : 0;
+                let id = $(this).data('id');
+                $.ajax({
+                    url: "{{ route('user.changeStatus') }}",
+                    method: 'POST',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        status: status,
+                        id: id
+                    },
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response.status == true) {
+                            if (response.userStatus == 1) {
+                                $('#status').html('<small class="badge bg-success">Active</span>');
+                            } else {
+                                $('#status').html('<small class="badge bg-danger">Inactive</span>');
+                            }
+                        }
+                    },
+                    error: function (err) {
+                        console.log(err);
                     }
-                },
-                error: function (err) {
-                    console.log(err);
-                }
+                });
             });
         });
-    });
-    //Delete functionality is pending
-    function deleteUser(id){
+        //Delete functionality is pending
+        function deleteUser(id) {
             if (confirm("Are you sure you want to delete this user?")) {
                 $.ajax({
                     url: "{{ route('admin.users.delete') }}",
@@ -120,5 +129,5 @@
                 });
             }
         }
-</script>
+    </script>
 @endsection
