@@ -9,6 +9,9 @@
         content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1, user-scalable=no" />
     <meta name="HandheldFriendly" content="True" />
     <meta name="pinterest" content="nopin" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.27.3/ui/trumbowyg.min.css"
         integrity="sha512-Fm8kRNVGCBZn0sPmwJbVXlqfJmPC13zRsMElZenX6v721g/H7OukJd8XzDEBRQ2FSATK8xNF9UYvzsCtUpfeJg=="
@@ -42,7 +45,8 @@
                         <a class="btn btn-outline-primary me-2" href="{{ route('login') }}" type="submit">Login</a>
                     @else
                         @if (Auth::user()->role == 'admin')
-                            <a class="btn btn-outline-primary me-2" href="#" type="submit">Admin</a>
+                            <a class="btn btn-outline-primary me-2" href="{{ route('admin.dashboard') }}"
+                                type="submit">Admin</a>
                         @endif
                         <a class="btn btn-outline-primary me-2" href="{{ route('profile') }}"
                             type="submit">{{ Auth::user()->name }}</a>

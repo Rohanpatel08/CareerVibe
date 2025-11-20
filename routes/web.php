@@ -55,5 +55,9 @@ Route::middleware('auth:web')->group(function () {
     Route::post('reset/password', [ProfileController::class, 'resetPassword'])->name('reset.password');
 
     // Admin
-    Route::get('admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard')->middleware('admin');
+    Route::group(['middleware' => 'admin'], function () {
+        Route::get('admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+        Route::get('admin/users', [DashboardController::class, 'users'])->name('admin.users');
+        Route::post('admin/user/status', [DashboardController::class, 'changeStatus'])->name('user.changeStatus');
+    });
 });

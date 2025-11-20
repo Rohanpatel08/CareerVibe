@@ -10025,3 +10025,22 @@ footer .nav-link {
   background-color: #00D363 !important; 
   color: white !important;
 }
+
+.section-dashboard {
+    min-height: calc(100vh - 140px); /* navbar + footer space */
+}
+
+.card {
+    border-radius: 12px;
+}
+
+.btn-success {
+    background-color: #b1e5a0;
+    border: none;
+    color: #000;
+    font-weight: 600;
+}
+
+.btn-success:hover {
+    background-color: #9dd58b;
+}
