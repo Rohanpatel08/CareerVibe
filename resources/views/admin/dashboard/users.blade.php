@@ -7,7 +7,7 @@
             <!-- Breadcrumb -->
             <nav aria-label="breadcrumb" class="p-3 mb-4">
                 <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Home</a></li>
                     <li class="breadcrumb-item active">Users</li>
                 </ol>
             </nav>
@@ -46,7 +46,9 @@
                                                 <td>{{ $user->email }}</td>
                                                 <td>{{ $user->mobile ?? 'N/A' }}</td>
                                                 <td>{{ $user->destination ?? 'N/A' }}</td>
-                                                <td id="status">{!!  $user->status == 1 ? '<small class="badge bg-success">Active</span>' : '<small class="badge bg-dangrer">Inactive</span>' !!}</td>
+                                                <td id="status">
+                                                    {!!  $user->status == 1 ? '<small class="badge bg-success">Active</span>' : '<small class="badge bg-dangrer">Inactive</span>' !!}
+                                                </td>
                                                 <td>
                                                     <div class="d-flex align-items-center gap-3" style="height: 40px;">
                                                         <div class="form-check form-switch mb-0">
@@ -112,7 +114,6 @@
                 });
             });
         });
-        //Delete functionality is pending
         function deleteUser(id) {
             if (confirm("Are you sure you want to delete this user?")) {
                 $.ajax({
@@ -124,7 +125,12 @@
                     },
                     dataType: 'json',
                     success: function (response) {
-                        window.location.href = "{{ route('admin.users') }}";
+                        if (response.status == true) {
+                            window.location.href = "{{ route('admin.users') }}";
+                        }
+                    },
+                    error: function (err) {
+                        console.log(err);
                     }
                 });
             }

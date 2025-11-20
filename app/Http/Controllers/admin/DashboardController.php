@@ -46,10 +46,12 @@ class DashboardController extends Controller
 
     public function deleteUser(Request $request)
     {
-        //Delete functionality is pending
         $user = User::findOrFail($request->id);
         $user->delete();
-        return redirect()->route('admin.users')->with('success', 'User deleted successfully');
+        session()->flash('success', 'User deleted successfully');
+        return response()->json([
+            'status' => true,
+        ]);
     }
 
     public function changeStatus(Request $request)
