@@ -56,6 +56,11 @@
             </div>
         </nav>
     </header>
+    @if (isset($message) && $message == true)
+        <div class="alert alert-warning fade show" role="alert" style="margin-bottom: 0;">
+            Please complete your profile. <a href="{{ route('profile') }}">Click Here</a>
+        </div>
+    @endif
     @yield('main')
 
     <footer class="bg-dark py-3 bg-2">

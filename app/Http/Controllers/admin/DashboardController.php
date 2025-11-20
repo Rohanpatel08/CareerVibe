@@ -20,6 +20,38 @@ class DashboardController extends Controller
         return view('admin.dashboard.users', compact('users'));
     }
 
+    public function usersEdit($id)
+    {
+        $user = User::findOrFail($id);
+        return view('admin.dashboard.users-edit', compact('user'));
+    }
+
+    public function updateUser(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|min:3',
+            'email' => 'required|email|unique:users,email,' . $id . ',id',
+            'mobile' => 'nullable|numeric|min_digits:10|max_digits:15',
+            'designation' => 'nullable|min:8'
+        ]);
+        $user = User::findOrFail($request->id);
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->mobile = $request->mobile;
+        $user->destination = $request->designation;
+        $user->save();
+        return redirect()->route('admin.users')->with('success', 'User updated successfully');
+    }
+
+    public function deleteUser(Request $request)
+    {
+        //Delete functionality is pending
+        $user = User::findOrFail($request->id);
+        $user->delete();
+        return redirect()->route('admin.users')->with('success', 'User deleted successfully');
+    }
+
     public function changeStatus(Request $request)
     {
         $user = User::findOrFail($request->id);

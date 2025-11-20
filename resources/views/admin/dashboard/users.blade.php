@@ -11,7 +11,7 @@
                     <li class="breadcrumb-item active">Users</li>
                 </ol>
             </nav>
-
+            @include('message')
             <!-- Dashboard Cards -->
             <div class="row g-4 justify-content-center">
                 <div class="card border-0 shadow mb-4 p-3">
@@ -58,8 +58,8 @@
                                                                 role="switch" data-id="{{ $user->id }}" id="status"
                                                                 {{ $user->status == 1 ? 'checked' : '' }}>
                                                         </div>
-                                                        <a href="#" class="btn btn-outline-warning"><i class="fa fa-edit"></i></a>
-                                                        <a href="#" class="btn btn-outline-danger"><i class="fa fa-trash"></i></a>
+                                                        <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-outline-warning"><i class="fa fa-edit"></i></a>
+                                                        <a href="#" class="btn btn-outline-danger"><i class="fa fa-trash" onclick="deleteUser({{ $user->id }})"></i></a>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -103,5 +103,22 @@
             });
         });
     });
+    //Delete functionality is pending
+    function deleteUser(id){
+            if (confirm("Are you sure you want to delete this user?")) {
+                $.ajax({
+                    url: "{{ route('admin.users.delete') }}",
+                    method: 'POST',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        id: id
+                    },
+                    dataType: 'json',
+                    success: function (response) {
+                        window.location.href = "{{ route('admin.users') }}";
+                    }
+                });
+            }
+        }
 </script>
 @endsection
