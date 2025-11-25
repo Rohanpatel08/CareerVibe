@@ -31,7 +31,7 @@
                 <div class="col-md-4">
                     <div class="card border-0 shadow-sm text-center py-4" style="height: 11rem;">
                         <div class="card-body d-flex justify-content-center align-items-center">
-                            <a href="#">
+                            <a href="{{ route('admin.jobs') }}">
                                 <i class="fa-solid fa-briefcase fa-2x"></i>
                                 <h5 class="card-title fw-bold mb-2">Jobs</h5>
                             </a>

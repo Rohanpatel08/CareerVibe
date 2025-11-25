@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\CareerJob;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -62,6 +63,15 @@ class DashboardController extends Controller
         return response()->json([
             'status' => true,
             'userStatus' => $user->status
+        ]);
+    }
+
+    // Jobs
+    public function jobs()
+    {
+        $jobs = CareerJob::orderBy('created_at', 'desc')->paginate(5);
+        return view('admin.dashboard.jobs.jobs', [
+            'jobs' => $jobs
         ]);
     }
 }

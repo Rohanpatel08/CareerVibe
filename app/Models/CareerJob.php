@@ -36,4 +36,14 @@ class CareerJob extends Model
     {
         return $this->hasOne(JobCategory::class, 'id', 'job_category_id');
     }
+
+    public function applications()
+    {
+        return $this->hasMany(JobApplication::class, 'job_id', 'id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 }

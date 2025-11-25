@@ -57,10 +57,15 @@ Route::middleware('auth:web')->group(function () {
     // Admin
     Route::group(['middleware' => 'admin'], function () {
         Route::get('admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+
+        // Users
         Route::get('admin/users', [DashboardController::class, 'users'])->name('admin.users');
         Route::get('admin/users/edit/{id}', [DashboardController::class, 'usersEdit'])->name('admin.users.edit');
         Route::put('admin/users/update/{id}', [DashboardController::class, 'updateUser'])->name('admin.users.update');
         Route::post('admin/users/delete', [DashboardController::class, 'deleteUser'])->name('admin.users.delete');
         Route::post('admin/user/status', [DashboardController::class, 'changeStatus'])->name('user.changeStatus');
+
+        //Jobs
+        Route::get('admin/jobs', [DashboardController::class, 'jobs'])->name('admin.jobs');
     });
 });
