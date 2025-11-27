@@ -51,7 +51,7 @@ Route::middleware('auth:web')->group(function () {
     Route::get('job/my-saved-job', [JobController::class, 'mySavedJobs'])->name('job.mySavedJobs');
     Route::post('job/remove-saved-job', [JobController::class, 'removeSavedJobs'])->name('job.removeSavedJob');
 
-    //reset Password
+    // reset Password
     Route::post('reset/password', [ProfileController::class, 'resetPassword'])->name('reset.password');
 
     // Admin
@@ -65,7 +65,10 @@ Route::middleware('auth:web')->group(function () {
         Route::post('admin/users/delete', [DashboardController::class, 'deleteUser'])->name('admin.users.delete');
         Route::post('admin/user/status', [DashboardController::class, 'changeStatus'])->name('user.changeStatus');
 
-        //Jobs
+        // Jobs
         Route::get('admin/jobs', [DashboardController::class, 'jobs'])->name('admin.jobs');
+        Route::get('admin/jobs/edit/{id}', [DashboardController::class, 'editJobs'])->name('admin.jobs.edit');
+        Route::put('admin/jobs/update/{id}', [DashboardController::class, 'updateJob'])->name('admin.jobs.update');
+        Route::post('admin/jobs/delete', [DashboardController::class, 'deleteJob'])->name('admin.jobs.delete');
     });
 });

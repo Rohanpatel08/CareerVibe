@@ -53,10 +53,7 @@
                                                             </a>
                                                             <ul class="dropdown-menu dropdown-menu-end">
                                                                 <li><a class="dropdown-item"
-                                                                        href="{{ route('job.details', base64_encode($job->id)) }}">
-                                                                        <i class="fa fa-eye" aria-hidden="true"></i> View</a></li>
-                                                                <li><a class="dropdown-item"
-                                                                        href="{{ route('job.edit', base64_encode($job->id)) }}"><i
+                                                                        href="{{ route('admin.jobs.edit', base64_encode($job->id)) }}"><i
                                                                             class="fa fa-edit" aria-hidden="true"></i> Edit</a></li>
                                                                 <li><a class="dropdown-item" href="#"
                                                                         onclick="deleteJob('{{ base64_encode($job->id) }}')"><i
@@ -108,14 +105,17 @@
         function deleteJob(id) {
             if (confirm("Are you sure you want to delete this job?")) {
                 $.ajax({
-                    url: "{{ route('job.delete', ':id') }}".replace(':id', id),
+                    url: "{{ route('admin.jobs.delete') }}",
                     method: 'POST',
                     data: {
                         _token: "{{ csrf_token() }}",
+                        id: id
                     },
                     dataType: 'json',
                     success: function (response) {
-                        window.location.href = "{{ route('job.myJobs') }}";
+                        if (response.status == true) {
+                            window.location.href = "{{ route('admin.jobs') }}";
+                        }
                     }
                 });
             }
