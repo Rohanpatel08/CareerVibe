@@ -20,6 +20,17 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Fav Icon -->
     <link rel="shortcut icon" type="image/x-icon" href="#" />
+    <!-- Bootstrap 5 CSS -->
+    {{--
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"> --}}
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+
+    <!-- DataTables Bootstrap 5 CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    @yield('customCss')
+
 </head>
 
 <body data-instant-intensity="mousedown">
@@ -70,6 +81,8 @@
     </footer>
     <script src="{{ asset('assets/js/jquery-3.6.0.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap.bundle.5.1.3.min.js') }}"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script src="{{ asset('assets/js/instantpages.5.1.0.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.27.3/trumbowyg.min.js"
         integrity="sha512-YJgZG+6o3xSc0k5wv774GS+W1gx0vuSI/kr0E0UylL/Qg/noNspPtYwHPN9q6n59CTR/uhgXfjDXLTRI+uIryg=="

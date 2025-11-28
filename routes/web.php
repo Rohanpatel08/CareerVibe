@@ -1,5 +1,6 @@
 <?php
 
+use App\DataTables\myJobsDataTable;
 use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\JobController;
@@ -70,5 +71,12 @@ Route::middleware('auth:web')->group(function () {
         Route::get('admin/jobs/edit/{id}', [DashboardController::class, 'editJobs'])->name('admin.jobs.edit');
         Route::put('admin/jobs/update/{id}', [DashboardController::class, 'updateJob'])->name('admin.jobs.update');
         Route::post('admin/jobs/delete', [DashboardController::class, 'deleteJob'])->name('admin.jobs.delete');
+
+        // dummy
+        Route::get('admin/dummy', function (myJobsDataTable $dataTable) {
+            $user = Auth::user();
+
+            return $dataTable->render('admin.dummy', ['user' => $user]);
+        })->name('admin.dummy');
     });
 });
